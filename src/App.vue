@@ -1,13 +1,17 @@
 <template>
   <div class="app">
-    <form>
+    <form @submit.prevent>
       <h4>Post creating</h4>
       <input class="input"
              type="text"
              placeholder="Title"
              v-bind:value="title"
-             @input="inputTitle">
-      <input class="input" type="text" placeholder="Description" v-bind:value="body">
+             @input="title = $event.target.value">
+      <input class="input"
+             type="text"
+             placeholder="Description"
+             v-bind:value="body"
+             @input="body = $event.target.value">
       <button class="btn" @click="createPost">Create</button>
     </form>
     <div class="post" v-for="post in posts" v-bind:key="post.id">
@@ -36,12 +40,15 @@ export default {
 
   methods: {
     createPost() {
-
+      const post = {
+        id: Date.now(),
+        title: this.title,
+        body: this.body,
+      }
+      this.posts.push(post);
+      this.title = '';
+      this.body = '';
     },
-
-    inputTitle(event) {
-      this.title = event.target.value;
-    }
   }
 }
 </script>
